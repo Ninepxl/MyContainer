@@ -1,5 +1,6 @@
 #pragma once
 #include <stack>
+#include <vector>
 struct TreeNode {
   int val;
   TreeNode *left;
@@ -51,10 +52,12 @@ private:
    *
    * @param val
    */
-  void insertHelp(TreeNode *&root, int val, std::stack<TreeNode *> &nodes);
+  void insertHelp(TreeNode *&root, int val, std::stack<TreeNode **> &nodes);
+  void eraseHelp(TreeNode *&root, int val, std::stack<TreeNode **> &nodes);
+  void BalanceAVLTree(std::stack<TreeNode **> &nodes);
+  void printOrdTreeHelp(TreeNode *root, std::vector<int> &vec);
+  void findPrevNode(TreeNode *root, TreeNode *&prevNode);
 
-  void BalanceAVLTree(std::stack<TreeNode *> &nodes);
-  void printOrdTreeHelp(TreeNode* root);
 public:
   AVLTree() : root(nullptr) {}
   /**
@@ -65,8 +68,14 @@ public:
   void insert(int val);
 
   /**
+   * @brief AVL 树的删除
+   *
+   * @param val
+   */
+  void erase(int val);
+  /**
    * @brief 遍历AVL树测试用
    *
    */
-  void printOrdTree();
+  void printOrdTree(std::vector<int> &vec);
 };
