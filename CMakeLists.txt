@@ -5,7 +5,8 @@ project(Container)
 # 设置C++标准
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g")
+set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
 # 设置头文件搜索路径
 # 这一步很关键，会告诉编译器去哪里找头文件
 include_directories(
@@ -18,7 +19,8 @@ add_executable(Container
     src/Vector/Vector.cc 
     src/BST/set.cc
     src/BST/AVLTree.cc
-    test/VectorTest.cc
+    src/List/List.cc
+    test/Test.cc
 )
 
 # 为目标设置额外的头文件路径
