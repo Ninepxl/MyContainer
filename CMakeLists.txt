@@ -16,7 +16,7 @@ include_directories(
 # 创建可执行文件
 add_executable(Container 
     src/main.cc
-    src/Vector/Vector.cc 
+    src/Vector/SimpleVector.cc 
     src/BST/set.cc
     src/BST/AVLTree.cc
     src/List/List.cc

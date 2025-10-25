@@ -1,12 +1,12 @@
 #include <cstddef>
 // 支持int 类型的Vector
 // class 的所有构造函数，const 迭代器
-class Vector {
+class SimpleVector {
 public:
   // 初始化一个新的空的Vector
-  Vector();
-  Vector(int n, int value);
-  ~Vector();
+  SimpleVector();
+  SimpleVector(int n, int value);
+  ~SimpleVector();
   size_t size() const;
   // Adds a new value to the end of this vector
   void push_back(int vlaue);

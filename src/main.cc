@@ -1,9 +1,7 @@
 // src/main.cpp
-#include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #define CATCH_CONFIG_RUNNER
-#include "Vector/Vector.h"
 #include "catch.hpp"
 using std::cout;
 using std::endl;
@@ -15,9 +13,14 @@ using std::endl;
 //   return malloc(size);
 // }
 
-int main() {
-  if (false) { // 设置为false的时候执行TEST框架
+struct array {
+  int a[10];
+};
 
+int main() {
+  if (true) { // 设置为false的时候执行TEST框架
+    array *a = new array();
+    a->a[0] = 10;
   } else {
     Catch::Session session;
     const char *argv[] = {"Container", "[List]"};
