@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cstddef>
 #include <utility>
-
+namespace MyMath {
 vec4::vec4(float x, float y, float z, float w) : data({x, y, z, w}) {}
 vec4::vec4(const vec4 &v2) : data(v2.data) {}
 vec4::vec4(vec4 &&v2) noexcept : data(std::move(v2.data)) {}
@@ -51,3 +51,4 @@ vec4 normalize(const vec4 &v) {
   int w = v[3] / l;
   return vec4(x, y, z, w);
 }
+} // namespace MyMath

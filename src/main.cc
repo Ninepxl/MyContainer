@@ -17,15 +17,16 @@ struct array {
   int a[10];
 };
 
+const int f() {
+  return 10;
+}
+
 int main() {
   if (true) { // 设置为false的时候执行TEST框架
-    array *a = new array();
-    a->a[0] = 10;
   } else {
     Catch::Session session;
     const char *argv[] = {"Container", "[List]"};
     int argc = sizeof(argv) / sizeof(argv[0]);
-
     session.applyCommandLine(argc, argv);
     return session.run();
   }

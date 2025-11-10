@@ -1,17 +1,18 @@
 #pragma once
 #include <vector>
+namespace MyList {
 struct ListNode {
   int val;
   ListNode *next;
   ListNode *prev;
   ListNode(int val) : val(val), next(nullptr), prev(nullptr) {}
-  
 };
 
 class List {
 private:
   ListNode *head; // 将prev当作尾节点
-  void printHelp(std::vector<int>& vec);
+  void printHelp(std::vector<int> &vec);
+
 public:
   /**
    * @brief 构造函数
@@ -45,3 +46,4 @@ public:
   void pop_front();
   std::vector<int> print();
 };
+} // namespace MyList

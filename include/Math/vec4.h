@@ -2,7 +2,7 @@
 #include <array>
 #include <cstddef>
 #include <ostream>
-
+namespace MyMath {
 class vec4 {
 private:
   std::array<float, 4> data;
@@ -51,3 +51,4 @@ vec4 normalize(const vec4 &v);
 
 /// Prints the vector to a stream in a nice format
 std::ostream &operator<<(std::ostream &o, const vec4 &v);
+} // namespace MyMath

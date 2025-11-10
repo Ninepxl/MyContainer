@@ -1,6 +1,7 @@
 #include "List/List.h"
 #include <vector>
 
+namespace MyList {
 void List::push_back(int val) {
   ListNode *newNode = new ListNode(val);
   if (this->head == nullptr) {
@@ -75,3 +76,5 @@ std::vector<int> List::print() {
   printHelp(vec);
   return vec;
 }
+
+} // namespace MyList
