@@ -1,3 +1,4 @@
+#pragma once
 #include <cstddef>
 #include <functional>
 #include <utility>
@@ -106,6 +107,14 @@ private:
         Node*      next;
         Node(const value_type& val = value_type(), Node* next = nullptr) : val(val), next(next) {}
     };
+
+    using node_pair = std::pair<typename HashMap::Node*, typename HashMap::Node*>;
+
+    static constexpr size_t kDefaultBuckets = 10;
+    size_t                  _size;
+    std::vector<Node*>      _buckets_array;
+    H                       _hash_function;
+
     /*
      * Type alias for a pair of node*'s.
      *
@@ -114,13 +123,6 @@ private:
      * Usage:
      *      auto& [prev, curr] = node_pair{nullptr, new node()};
      */
-    using node_pair = std::pair<typename HashMap::Node*, typename HashMap::Node*>;
-
-    static constexpr size_t kDefaultBuckets = 10;
-    size_t                  _size;
-    std::vector<Node*>      _buckets_array;
-    H                       _hash_function;
-
     node_pair find_node(const K& key) const;
 };
 
@@ -180,8 +182,19 @@ bool HashMap<K, M, H>::insert(const value_type& value) {
     if (this->load_factor() > 0.7) {
         // 扩容 ?
     }
+    // 没有找到key
+    auto [perv, curr] = find_node(key);
+    // find key
+    if (curr != nullptr) {
+        return false;
+    }
     size_t hashCode = _hash_function(key);
-    size_t index    = hashCode % _buckets_array.size();
+    size_t index = hashCode % _buckets_array.size();
+    Node* newNode = new Node(value, nullptr);
+    newNode->next = _buckets_array[index];
+    _buckets_array[index] = newNode;
+    _size++;
+    return true;
 }
 
 } // namespace MySTL
