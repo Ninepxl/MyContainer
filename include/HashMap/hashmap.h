@@ -100,6 +100,10 @@ public:
      * Complexity: O(1) amortized average case
      */
     bool insert(const value_type& value);
+    bool contains(const K& key);
+    bool erase(const K& key);
+    void rehash(size_t new_buckets);
+    M&   operator[](const K& key);
 
 private:
     struct Node {
@@ -153,25 +157,21 @@ size_t HashMap<K, M, H>::bucket_count() const {
 
 template <typename K, typename M, typename H>
 float HashMap<K, M, H>::load_factor() const {
-    return static_cast<float>(this->size() / this->_buckets_array.size());
+    return static_cast<float>(this->size()) / this->_buckets_array.size();
 }
 
 template <typename K, typename M, typename H>
 HashMap<K, M, H>::node_pair HashMap<K, M, H>::find_node(const K& key) const {
     size_t hashCode = _hash_function(key);
     size_t index    = hashCode % _buckets_array.size();
-    Node*  head     = _buckets_array[index];
-    // A -> B -> C
-    if (head->val.first == key) {
-        // key = A_Key
-        return {nullptr, head};
-    } else {
-        while (head) {
-            if (head->next->val.first == key) {
-                return {head, head->next};
-            }
-            head = head->next;
+    Node*  curr     = _buckets_array[index];
+    Node*  prev     = nullptr;
+    while (curr) {
+        if (curr->val.first == key) {
+            return {prev, curr};
         }
+        prev = curr;
+        curr = curr->next;
     }
     return {nullptr, nullptr};
 }
@@ -188,13 +188,71 @@ bool HashMap<K, M, H>::insert(const value_type& value) {
     if (curr != nullptr) {
         return false;
     }
-    size_t hashCode = _hash_function(key);
-    size_t index = hashCode % _buckets_array.size();
-    Node* newNode = new Node(value, nullptr);
-    newNode->next = _buckets_array[index];
+    size_t hashCode       = _hash_function(key);
+    size_t index          = hashCode % _buckets_array.size();
+    Node*  newNode        = new Node(value, nullptr);
+    newNode->next         = _buckets_array[index];
     _buckets_array[index] = newNode;
     _size++;
     return true;
+}
+
+template <typename K, typename M, typename H>
+bool HashMap<K, M, H>::contains(const K& key) {
+    return find_node(key).second != nullptr;
+}
+
+template <typename K, typename M, typename H>
+bool HashMap<K, M, H>::erase(const K& key) {
+    auto [prev, curr] = find_node(key);
+    if (curr == nullptr) {
+        return false;
+    }
+    if (prev == nullptr) {
+        size_t hashCode       = _hash_function(key);
+        size_t index          = hashCode % _buckets_array.size();
+        _buckets_array[index] = curr->next;
+    } else {
+        prev->next = prev->next->next;
+    }
+    delete curr;
+    _size--;
+    return true;
+}
+
+template <typename K, typename M, typename H>
+M& HashMap<K, M, H>::operator[](const K& key) {
+    size_t hashCode = _hash_function(key);
+    size_t index    = hashCode % _buckets_array.size();
+    Node*  head     = _buckets_array[index];
+    while (head) {
+        if (head->val.first == key) {
+            return head->val.second;
+        }
+        head = head->next;
+    }
+    Node* newNode         = new Node({key, M()}, _buckets_array[index]);
+    _buckets_array[index] = newNode;
+    _size++;
+    return _buckets_array[index]->val->second;
+}
+
+template <typename K, typename M, typename H>
+void HashMap<K, M, H>::rehash(size_t new_buckets) {
+    std::vector<Node*> new_buckets_array(new_buckets, nullptr);
+    for (size_t i = 0; i < _buckets_array.size(); i++) {
+        Node* curr = _buckets_array[i];
+        while (curr) {
+            Node*  next                 = curr->next;
+            size_t hashCode             = _hash_function(curr->val.first);
+            size_t newIndex             = hashCode % new_buckets;
+            curr->next                  = new_buckets_array[newIndex];
+            new_buckets_array[newIndex] = curr;
+            curr                        = next;
+        }
+        _buckets_array[i] = nullptr;
+    }
+    _buckets_array = std::move(new_buckets_array);
 }
 
 } // namespace MySTL
