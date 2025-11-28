@@ -19,8 +19,6 @@ add_executable(Container
     src/Vector/SimpleVector.cc 
     src/BST/set.cc
     src/BST/AVLTree.cc
-    src/List/List.cc
-    test/Test.cc
 )
 
 # 为目标设置额外的头文件路径

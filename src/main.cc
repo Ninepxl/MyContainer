@@ -1,4 +1,5 @@
 // src/main.cpp
+#include "HashMap/hashmap.h"
 #include <cstdlib>
 #include <iostream>
 #define CATCH_CONFIG_RUNNER
@@ -6,28 +7,19 @@
 using std::cout;
 using std::endl;
 
-// static int s_AllocationCount = 0;
-// void *operator new(size_t size) {
-//   std::cout << "Allocated " << size << " bytes\n";
-//   s_AllocationCount++;
-//   return malloc(size);
-// }
-
-struct array {
-  int a[10];
-};
-
-const int f() {
-  return 10;
-}
-
 int main() {
-  if (true) { // 设置为false的时候执行TEST框架
-  } else {
-    Catch::Session session;
-    const char *argv[] = {"Container", "[List]"};
-    int argc = sizeof(argv) / sizeof(argv[0]);
-    session.applyCommandLine(argc, argv);
-    return session.run();
-  }
+    if (true) { // 设置为false的时候执行TEST框架
+      MySTL::HashMap<std::string, int> map;
+      std::cout << map.bucket_count() << std::endl;
+      map.insert({"pxl", 22});
+      std::cout << map["pxl"] << std::endl;
+      map["pxl"] = 23;
+      std::cout << map["pxl"] << std::endl;
+    } else {
+        Catch::Session session;
+        const char*    argv[] = {"Container", "[List]"};
+        int            argc   = sizeof(argv) / sizeof(argv[0]);
+        session.applyCommandLine(argc, argv);
+        return session.run();
+    }
 }

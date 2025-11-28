@@ -1,6 +1,7 @@
 #pragma once
 #include <cstddef>
 #include <functional>
+#include <iostream>
 #include <utility>
 #include <vector>
 
@@ -141,6 +142,17 @@ template <typename K, typename M, typename H>
 HashMap<K, M, H>::HashMap(size_t size, const H& hash) : _size(0), _buckets_array(size, nullptr), _hash_function(hash) {}
 
 template <typename K, typename M, typename H>
+HashMap<K, M, H>::~HashMap<K, M, H>() {
+    for (Node* node : _buckets_array) {
+        while (node) {
+            Node* next = node->next;
+            delete node;
+            node = next;
+        }
+    }
+}
+
+template <typename K, typename M, typename H>
 size_t HashMap<K, M, H>::size() const {
     return this->_size;
 }
@@ -161,7 +173,7 @@ float HashMap<K, M, H>::load_factor() const {
 }
 
 template <typename K, typename M, typename H>
-HashMap<K, M, H>::node_pair HashMap<K, M, H>::find_node(const K& key) const {
+typename HashMap<K, M, H>::node_pair HashMap<K, M, H>::find_node(const K& key) const {
     size_t hashCode = _hash_function(key);
     size_t index    = hashCode % _buckets_array.size();
     Node*  curr     = _buckets_array[index];
@@ -180,7 +192,7 @@ template <typename K, typename M, typename H>
 bool HashMap<K, M, H>::insert(const value_type& value) {
     K key = value.first;
     if (this->load_factor() > 0.7) {
-        // 扩容 ?
+        rehash(_buckets_array.size() * 2);
     }
     // 没有找到key
     auto [perv, curr] = find_node(key);
@@ -190,8 +202,7 @@ bool HashMap<K, M, H>::insert(const value_type& value) {
     }
     size_t hashCode       = _hash_function(key);
     size_t index          = hashCode % _buckets_array.size();
-    Node*  newNode        = new Node(value, nullptr);
-    newNode->next         = _buckets_array[index];
+    Node*  newNode        = new Node(value, _buckets_array[index]);
     _buckets_array[index] = newNode;
     _size++;
     return true;
@@ -234,7 +245,7 @@ M& HashMap<K, M, H>::operator[](const K& key) {
     Node* newNode         = new Node({key, M()}, _buckets_array[index]);
     _buckets_array[index] = newNode;
     _size++;
-    return _buckets_array[index]->val->second;
+    return _buckets_array[index]->val.second;
 }
 
 template <typename K, typename M, typename H>
