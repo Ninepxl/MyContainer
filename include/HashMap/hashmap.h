@@ -142,7 +142,7 @@ template <typename K, typename M, typename H>
 HashMap<K, M, H>::HashMap(size_t size, const H& hash) : _size(0), _buckets_array(size, nullptr), _hash_function(hash) {}
 
 template <typename K, typename M, typename H>
-HashMap<K, M, H>::~HashMap<K, M, H>() {
+HashMap<K, M, H>::~HashMap() {
     for (Node* node : _buckets_array) {
         while (node) {
             Node* next = node->next;
