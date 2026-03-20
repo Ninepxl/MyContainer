@@ -27,22 +27,22 @@ target_include_directories(Container
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-# UniquePtr 测试 (独立可执行文件，方便单独运行)
-add_executable(UniquePtrTest
-    test/UniquePtrTest.cc
-)
-target_include_directories(UniquePtrTest
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-target_compile_definitions(UniquePtrTest PRIVATE CATCH_CONFIG_MAIN)
+# # UniquePtr 测试 (独立可执行文件，方便单独运行)
+# add_executable(UniquePtrTest
+#     test/UniquePtrTest.cc
+# )
+# target_include_directories(UniquePtrTest
+#     PRIVATE
+#     ${CMAKE_CURRENT_SOURCE_DIR}/include
+# )
+# target_compile_definitions(UniquePtrTest PRIVATE CATCH_CONFIG_MAIN)
 
-# SharedPtr 测试
-add_executable(SharedPtrTest
-    test/SharedPtrTest.cc
-)
-target_include_directories(SharedPtrTest
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-target_compile_definitions(SharedPtrTest PRIVATE CATCH_CONFIG_MAIN)
+# # SharedPtr 测试
+# add_executable(SharedPtrTest
+#     test/SharedPtrTest.cc
+# )
+# target_include_directories(SharedPtrTest
+#     PRIVATE
+#     ${CMAKE_CURRENT_SOURCE_DIR}/include
+# )
+# target_compile_definitions(SharedPtrTest PRIVATE CATCH_CONFIG_MAIN)

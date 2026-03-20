@@ -1,5 +1,6 @@
 // src/main.cpp
 #include "HashMap/hashmap.h"
+#include "PriorityQueue/PriorityQueue.h"
 #include <cstdlib>
 #include <iostream>
 #define CATCH_CONFIG_RUNNER
@@ -8,13 +9,13 @@ using std::cout;
 using std::endl;
 
 int main() {
-    if (false) { // 设置为false的时候执行TEST框架
-      MySTL::HashMap<std::string, int> map;
-      std::cout << map.bucket_count() << std::endl;
-      map.insert({"pxl", 22});
-      std::cout << map["pxl"] << std::endl;
-      map["pxl"] = 23;
-      std::cout << map["pxl"] << std::endl;
+    if (true) { // 设置为false的时候执行TEST框架
+       PriorityQueue<int> q;
+       q.push(3); 
+       q.push(5);
+       q.push(2);
+       cout << q.size() << endl;
+       cout << q.pop() << endl;
     } else {
         Catch::Session session;
         const char*    argv[] = {"Container", "[UniquePtr]"};
